@@ -1,0 +1,24 @@
+name: Deploy on GitHub Pages
+on:
+  push:
+    branches:
+      - 'main'
+jobs:
+  Deploy-GitHub-Pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v4
+      - name: Set up Elm
+        uses: jorelali/setup-elm@v3
+      - name: Get the source
+        uses: actions/checkout@v3
+        with:
+          ref: main
+      - name: Generate static files
+        run: python3 scripts.py
+      - name: Deploy
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v3
+        with:
+          build_dir: dist
